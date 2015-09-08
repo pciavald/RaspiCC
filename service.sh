@@ -12,7 +12,7 @@ SCRIPTNAME=/etc/init.d/$NAME
 case "$1" in
 	start)
 		printf "%-50s" "Starting $NAME..."
-		echo "Which architecture do you want to enable ? [32/64] "
+		echo "\nWhich architecture do you want to enable ? [32/64] "
 		read ARCH
 		echo "What is the ip range that you want to allow ? [192.168.1.0/24] "
 		read IPRANGE
@@ -22,9 +22,10 @@ case "$1" in
 
 	stop)
 		printf "%-50s" "Stopping $NAME"
+		killall distccd
 	;;
 
 	*)
-		echo "Usage: $0 {status|start|stop|restart}"
+		echo "Usage: $0 {start|stop}"
 		exit 1
 esac
