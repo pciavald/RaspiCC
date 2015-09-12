@@ -3,7 +3,16 @@
 echo "What is your compiling server's ip config ? [ip/threads - 192.168.1.158/16 192.168.1.192/8]"
 read HOSTS
 
-sudo apt-get install subversion autoconf automake python python-dev git libgtk2.0-dev
+LIBGTK=""
+OPT=""
+read -p "Do you want to enable GUI ? [y/n]" -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+	LIBGTK="libgtk2.0-dev"
+	OPT="--with-gtk"
+fi
+
+sudo apt-get install subversion autoconf automake python python-dev git $LIBGTK
 svn checkout http://distcc.googlecode.com/svn/trunk/ distcc-read-only
 cd distcc-read-only
 wget https://toolbox-of-eric.googlecode.com/files/libiberty.tar.gz
@@ -14,7 +23,7 @@ make
 sudo make install
 cd ..
 ./autogen.sh
-./configure --with-gtk
+./configure $OPT
 make
 sudo make install
 sudo ln -s /usr/local/bin/distcc /usr/local/bin/gcc
